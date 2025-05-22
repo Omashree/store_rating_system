@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react'; // Import useCallback
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { AuthContext } from '../AuthContext';
 import UserTable from '../components/UserTable';
 import StoreTable from '../components/StoreTable';
@@ -104,7 +104,6 @@ function AdminDashboard() {
         if (typeof aValue === 'string' && typeof bValue === 'string') {
           return userSortConfig.direction === 'ascending' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
         }
-
         if (aValue < bValue) {
           return userSortConfig.direction === 'ascending' ? -1 : 1;
         }
@@ -144,7 +143,6 @@ function AdminDashboard() {
         if (typeof aValue === 'string' && typeof bValue === 'string') {
           return storeSortConfig.direction === 'ascending' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
         }
-
         if (aValue < bValue) {
           return storeSortConfig.direction === 'ascending' ? -1 : 1;
         }

@@ -10,12 +10,12 @@ function StoreOwnerDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
+
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
   const fetchStoreOwnerRatings = useCallback(async () => {
     setLoading(true);
     setError('');
-
     if (!authContext || !authContext.token) {
       setError('Authentication token not found. Please log in.');
       setLoading(false);
@@ -50,7 +50,7 @@ function StoreOwnerDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [authContext.token, BACKEND_URL]);
+  }, [authContext, BACKEND_URL]);
 
   useEffect(() => {
     if (authContext && authContext.token) {
@@ -61,8 +61,6 @@ function StoreOwnerDashboard() {
     }
   }, [authContext, fetchStoreOwnerRatings]);
 
-  const { logout } = authContext;
-
   if (!authContext) {
     console.error("AuthContext is null in StoreOwnerDashboard. Ensure it's rendered within AuthProvider.");
     return (
@@ -71,6 +69,8 @@ function StoreOwnerDashboard() {
       </Container>
     );
   }
+
+  const { logout } = authContext; 
 
   if (loading) {
     return (
