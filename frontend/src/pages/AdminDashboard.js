@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react'; // Import useCallback
 import { AuthContext } from '../AuthContext';
 import UserTable from '../components/UserTable';
 import StoreTable from '../components/StoreTable';
@@ -27,7 +27,7 @@ function AdminDashboard() {
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
@@ -64,11 +64,11 @@ function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, role, BACKEND_URL]);
 
   useEffect(() => {
     fetchDashboardData();
-  }, [token, role]);
+  }, [fetchDashboardData]);
 
   const handleLogout = () => {
     logout();

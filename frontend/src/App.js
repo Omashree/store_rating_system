@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { AuthProvider, AuthContext } from './AuthContext';
 import { Container, Alert, Button } from 'react-bootstrap';
 
@@ -12,30 +12,31 @@ function MainAppContent() {
   const { token, role, logout } = useContext(AuthContext);
   const [isAuthChecking, setIsAuthChecking] = useState(true);
   const [currentPage, setCurrentPage] = useState(window.location.hash === '#register' ? 'register' : 'login');
+
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      if (token) {
-        try {
-          const response = await fetch(`${BACKEND_URL}/api/admin/users`, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          });
+  const verifyToken = useCallback(async () => {
+    if (token) {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/admin/users`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
 
-          if (!response.ok) {
-            console.warn("Token verification failed, logging out.");
-            logout();
-          }
-        } catch (error) {
-            console.error("Error during token verification:", error);
-            logout();
+        if (!response.ok) {
+          console.warn("Token verification failed, logging out.");
+          logout();
         }
+      } catch (error) {
+          console.error("Error during token verification:", error);
+          logout();
       }
-      setIsAuthChecking(false);
-    };
+    }
+    setIsAuthChecking(false);
+  }, [token, logout, BACKEND_URL]);
 
+  useEffect(() => {
     verifyToken();
 
     const handleHashChange = () => {
@@ -45,7 +46,7 @@ function MainAppContent() {
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, [token, logout]);
+  }, [verifyToken]);
 
   if (isAuthChecking) {
     return (

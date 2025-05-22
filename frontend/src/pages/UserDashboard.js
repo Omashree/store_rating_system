@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { AuthContext } from '../AuthContext';
 import UpdatePasswordModal from '../components/UpdatePasswordModal';
-import { Container, Row, Col, Form, Button, Table, Alert, Card, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Table, Alert, Modal } from 'react-bootstrap';
 
 function UserDashboard() {
   const { token, logout } = useContext(AuthContext);
@@ -18,7 +18,7 @@ function UserDashboard() {
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
-  const fetchStoresAndRatings = async () => {
+  const fetchStoresAndRatings = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
@@ -52,11 +52,11 @@ function UserDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, BACKEND_URL]);
 
   useEffect(() => {
     fetchStoresAndRatings();
-  }, [token]);
+  }, [fetchStoresAndRatings]);
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
