@@ -1,11 +1,12 @@
+require('dot-env').config();
 const jwt = require('jsonwebtoken');
-const SECRET = 'jwt_secret';
+const secret = process.env.SECRET;
 
 function authenticateJWT(req, res, next) {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split(' ')[1];
-    jwt.verify(token, SECRET, (err, user) => {
+    jwt.verify(token, secret, (err, user) => {
       if (err) return res.sendStatus(403);
       req.user = user;
       next();
