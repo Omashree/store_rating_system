@@ -16,4 +16,4 @@ function authenticateJWT(req, res, next) {
   }
 }
 
-module.exports = { authenticateJWT, SECRET };
+module.exports = { authenticateJWT, secret };
