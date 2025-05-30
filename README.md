@@ -199,6 +199,7 @@ DB_HOST=localhost
 DB_USER=your_mysql_user
 DB_PASSWORD=your_mysql_password
 DB_DATABASE=store_ratings_db
+SECRET=your_secret_code
 PORT=5000
 ```
 
